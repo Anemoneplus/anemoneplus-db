@@ -272,5 +272,54 @@ form.addEventListener("submit", e => {
     .finally(() => { fsave.disabled = false; fsave.textContent = label; });
 });
 </script>
+<!-- PIN-LOCK:START -->
+<script>
+(function () {
+  var PIN_HASH = "b2b2f104d32c638903e151a9b20d6e27b41d8c0c84cf8458738f83ca2f1dd744"; // SHA-256 of the PIN
+  var KEY = "projectsUnlocked";
+  function unlocked() { try { return sessionStorage.getItem(KEY) === "1"; } catch (e) { return false; } }
+  async function sha256(s) {
+    var b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+    return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, "0"); }).join("");
+  }
+  var css = document.createElement("style");
+  css.textContent =
+    "#pinOverlay{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;z-index:5000}" +
+    "#pinBox{background:#fff;border-radius:14px;padding:26px 28px;width:280px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.25);font-family:inherit}" +
+    "#pinBox h3{margin:6px 0 4px;color:#0f2a4a}#pinBox p{margin:0 0 14px;font-size:12px;color:#64748b}" +
+    "#pinInput{width:100%;box-sizing:border-box;padding:10px;border:1px solid #cbd5e1;border-radius:8px;text-align:center;font-size:18px;letter-spacing:6px}" +
+    "#pinErr{color:#dc2626;font-size:12px;min-height:16px;margin-top:6px}" +
+    "#pinBox .row{display:flex;gap:10px;margin-top:8px}#pinBox button{flex:1;padding:9px;border-radius:8px;border:1px solid #cbd5e1;background:#fff;cursor:pointer;font-weight:600}" +
+    "#pinBox button.ok{background:#0f3d6b;color:#fff;border-color:#0f3d6b}";
+  document.head.appendChild(css);
+  var ov = document.createElement("div");
+  ov.id = "pinOverlay";
+  ov.innerHTML = '<div id="pinBox"><div style="font-size:28px">🔒</div><h3>Enter PIN to edit</h3>' +
+    '<p>Contact the project coordinator for the PIN</p>' +
+    '<input id="pinInput" type="password" maxlength="12" placeholder="••••" autocomplete="off">' +
+    '<div id="pinErr"></div><div class="row"><button id="pinCancel">Cancel</button><button class="ok" id="pinOk">Unlock</button></div></div>';
+  document.body.appendChild(ov);
+  var input = ov.querySelector("#pinInput"), err = ov.querySelector("#pinErr"), pending = null;
+  function close() { ov.style.display = "none"; pending = null; }
+  async function tryUnlock() {
+    if ((await sha256(input.value.trim())) === PIN_HASH) {
+      try { sessionStorage.setItem(KEY, "1"); } catch (e) {}
+      var t = pending; close(); if (t) t.click();
+    } else { err.textContent = "Wrong PIN"; input.select(); }
+  }
+  ov.querySelector("#pinOk").onclick = tryUnlock;
+  ov.querySelector("#pinCancel").onclick = close;
+  input.addEventListener("keydown", function (e) { if (e.key === "Enter") tryUnlock(); if (e.key === "Escape") close(); });
+  // Intercept "Add project" and ✏️ edit buttons before the page's own handlers run
+  window.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("#addBtn, [data-edit]");
+    if (!b || unlocked()) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    pending = b; input.value = ""; err.textContent = "";
+    ov.style.display = "flex"; setTimeout(function () { input.focus(); }, 30);
+  }, true);
+})();
+</script>
+<!-- PIN-LOCK:END -->
 </body>
 </html>
