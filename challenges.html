@@ -953,7 +953,8 @@ const T = {
    note:'Натисніть на елемент, щоб побачити короткий опис, інфографіку та пов’язані зацікавлені сторони.'}
 };
 let libCat = 'all', rows = SEED, lang = 'en', filt = 'all', q = '', counts = {}, STK = [], openIds = new Set(), allIds = new Set();
-try{ lang = localStorage.getItem('chLang') || 'en'; }catch(e){}
+/* always open in English; ?lang=ro|bg|tr|uk opens another language */
+try{ const u=new URLSearchParams(location.search).get('lang'); if(u) lang=u.toLowerCase()=='ua'?'uk':u.toLowerCase(); }catch(e){}
 if(!['en','ro','bg','tr','uk'].includes(lang)) lang='en';
 
 function parseCSV(s){
@@ -1092,7 +1093,7 @@ function render(){
   const L=T[lang];
   const lg=document.getElementById('langs');
   lg.innerHTML=LANGS.map(([k,l])=>`<button class="hbtn ${lang==k?'on':''}" data-l="${k}">${l}</button>`).join('');
-  lg.querySelectorAll('button').forEach(b=>b.onclick=()=>{lang=b.dataset.l;try{localStorage.setItem('chLang',lang)}catch(e){};render();});
+  lg.querySelectorAll('button').forEach(b=>b.onclick=()=>{lang=b.dataset.l;render();});
   document.documentElement.lang=lang;
   const bar=document.getElementById('bar');
   bar.innerHTML=`<input id="q" placeholder="${L.search}" value="${esc(q)}">`;
