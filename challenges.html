@@ -13,6 +13,8 @@ header{background:linear-gradient(90deg,var(--navy1),var(--navy2));color:#fff;pa
 header img{height:46px;border-radius:4px;background:#fff}
 header .t{flex:1}header h1{margin:0;font-size:17px;letter-spacing:.02em}header small{opacity:.65;font-size:12px}
 .hbtn{background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:14px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.langs-x{}
+#langs{display:flex;gap:4px}#langs .hbtn{padding:8px 10px}
 .hbtn.on{background:#fff;color:var(--navy2);font-weight:600}
 main{max-width:1500px;margin:0 auto;padding:16px 22px 40px}
 .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
@@ -47,21 +49,52 @@ main{max-width:1500px;margin:0 auto;padding:16px 22px 40px}
 .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
 .sgrid .item{margin:0;border-left-color:var(--navy2)}
 .note{font-size:12px;color:var(--muted);margin-top:14px}
+.info{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:14px;overflow:hidden}
+.info summary{cursor:pointer;padding:12px 16px;font-weight:600;color:var(--navy2);list-style:none;display:flex;align-items:center;gap:8px}
+.info summary::-webkit-details-marker{display:none}
+.info summary::after{content:'▾';margin-left:auto;transition:.2s}.info[open] summary::after{transform:rotate(180deg)}
+.info img{display:block;width:100%;height:auto;border-top:1px solid var(--line)}
+.info .dl{display:flex;gap:8px;padding:10px 16px;font-size:13px}.info .dl a{color:var(--navy2)}
+.stk{margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+.stk b{font-size:12px;color:var(--ink)}.stk ul{list-style:none;margin:6px 0 0;padding:0}
+.stk li{display:flex;gap:6px;align-items:baseline;font-size:12px;padding:3px 0;border-bottom:1px solid #f1f5f9;color:var(--ink)}
+.stk li .c{color:var(--muted);margin-left:auto;white-space:nowrap;font-size:11px}
+.dot{width:8px;height:8px;border-radius:50%;flex:none;display:inline-block}
+.d-mc{background:#dc2626}.d-ks{background:#ea580c}.d-cw{background:#2563eb}.d-ki{background:#16a34a}
+.stk button{margin-top:6px;border:1px solid var(--line);background:#fff;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--navy2)}
+.stk .leg{font-size:11px;color:var(--muted);margin-top:4px}
+.gimg{display:block;width:100%;height:auto;cursor:zoom-in;border-bottom:1px solid var(--line)}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.lcard{display:block;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.lcard:hover{box-shadow:0 2px 10px rgba(15,30,51,.12)}
+.lcard img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover}
+.lcard span{display:block;padding:7px 9px;font-size:12.5px;line-height:1.3}
+.lib .bar{margin-bottom:10px}
+.rig{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.rig a{display:block;width:120px;border:1px solid var(--line);border-radius:6px;overflow:hidden;text-decoration:none;color:var(--muted);font-size:10.5px;background:#fff}
+.rig img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover}
+.rig a span{display:block;padding:3px 5px;line-height:1.2}
 .empty{font-size:12.5px;color:var(--muted);padding:4px 0 10px}
 </style>
 </head>
 <body>
 <header>
-  <img src="logo.png" alt="ANEMONE PLUS">
+  <img src="logo.png" alt="ANEMONE PLUS" onerror="this.style.display='none'">
   <div class="t"><h1>ANEMONE PLUS</h1><small>BSB00949 · Stakeholder Challenges &amp; Support</small></div>
-  <button class="hbtn on" id="lEN">EN</button><button class="hbtn" id="lRO">RO</button>
+  <span id="langs"></span>
   <a class="hbtn" href="./">← Back to Stakeholder Database</a>
 </header>
 <main>
+  <details class="info" id="info" open>
+    <summary id="infoT">🖼️ Infographic: Three stakeholders – shared challenges</summary>
+    <a href="infographics/17-three-stakeholders-v3.jpg" target="_blank" rel="noopener"><img src="infographics/17-three-stakeholders-v3.jpg" alt="ANEMONE PLUS infographic: Three stakeholders – shared challenges" onerror="document.getElementById('info').style.display='none'"></a>
+    <div class="dl"><a href="infographics/17-three-stakeholders-v3.jpg" target="_blank" rel="noopener" id="infoOpen">Open full size</a> · <a href="infographics/17-three-stakeholders-v3.jpg" download id="infoDl">Download</a></div>
+  </details>
   <div class="summary" id="summary"></div>
   <div class="bar" id="bar"></div>
   <div class="grid" id="grid"></div>
   <div class="shared"><h3 id="sharedT"></h3><div class="sgrid" id="sgrid"></div></div>
+  <section class="shared lib"><h3 id="libT"></h3><div class="bar" id="libBar"></div><div class="lgrid" id="lgrid"></div></section>
   <p class="note" id="note"></p>
 </main>
 <script>
@@ -79,11 +112,16 @@ const SEED = [
 "text_en": "Implementing effective and coordinated policies across countries",
 "text_ro": "Implementarea unor politici eficiente și coordonate între țări",
 "tool": "",
+"match": "policy|regulatory|cross-border|governance",
+"infographics": "10;16",
 "source": "Application Form BSB00949 v2.0 – transnational cooperation, aligning strategies",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Прилагане на ефективни и координирани политики между държавите",
+"text_tr": "Ülkeler arasında etkili ve koordineli politikaların uygulanması",
+"text_uk": "Впровадження ефективної та узгодженої політики між країнами"
 },
 {
 "id": "GOV-C2",
@@ -92,11 +130,16 @@ const SEED = [
 "text_en": "Reducing pollution and ensuring good environmental status",
 "text_ro": "Reducerea poluării și asigurarea stării ecologice bune",
 "tool": "",
+"match": "pollution|water quality|environmental protection|contaminant",
+"infographics": "06;20",
 "source": "Application Form – pressures: eutrophication, contaminants",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Намаляване на замърсяването и осигуряване на добро състояние на околната среда",
+"text_tr": "Kirliliğin azaltılması ve iyi çevresel durumun sağlanması",
+"text_uk": "Зменшення забруднення та забезпечення доброго екологічного стану"
 },
 {
 "id": "GOV-C3",
@@ -105,11 +148,16 @@ const SEED = [
 "text_en": "Strengthening monitoring, data sharing and regional cooperation",
 "text_ro": "Consolidarea monitorizării, a schimbului de date și a cooperării regionale",
 "tool": "",
+"match": "monitoring|data|cross-border|gis",
+"infographics": "13;22",
 "source": "Application Form – collaboration and data sharing among Black Sea countries",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Укрепване на мониторинга, обмена на данни и регионалното сътрудничество",
+"text_tr": "İzleme, veri paylaşımı ve bölgesel işbirliğinin güçlendirilmesi",
+"text_uk": "Посилення моніторингу, обміну даними та регіональної співпраці"
 },
 {
 "id": "GOV-C4",
@@ -118,11 +166,16 @@ const SEED = [
 "text_en": "Integrating climate adaptation and ecosystem protection into planning and decision-making",
 "text_ro": "Integrarea adaptării la schimbările climatice și a protecției ecosistemelor în planificare și decizie",
 "tool": "",
+"match": "climate|nature management|protection of marine|spatial planning|coastal zone",
+"infographics": "04;05",
 "source": "Application Form – vulnerability to human and climate pressures",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Интегриране на адаптацията към климата и опазването на екосистемите в планирането и вземането на решения",
+"text_tr": "İklim uyumu ve ekosistem korumasının planlama ve karar alma süreçlerine entegre edilmesi",
+"text_uk": "Інтеграція адаптації до зміни клімату та захисту екосистем у планування та прийняття рішень"
 },
 {
 "id": "GOV-S1",
@@ -131,11 +184,16 @@ const SEED = [
 "text_en": "Provides scientific evidence and integrated data for policy development",
 "text_ro": "Oferă dovezi științifice și date integrate pentru dezvoltarea politicilor",
 "tool": "WebGIS; Monitoring data",
+"match": "policy|data|monitoring",
+"infographics": "22;13",
 "source": "Application Form – informed decision-making bodies",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Предоставя научни доказателства и интегрирани данни за разработване на политики",
+"text_tr": "Politika geliştirme için bilimsel kanıt ve entegre veri sağlar",
+"text_uk": "Надає наукові дані та інтегровану інформацію для розробки політики"
 },
 {
 "id": "GOV-S2",
@@ -144,11 +202,16 @@ const SEED = [
 "text_en": "Identifies environmental hotspots and risks",
 "text_ro": "Identifică zonele critice (hotspots) și riscurile de mediu",
 "tool": "Remote sensing; Modelling",
+"match": "risk|pollution|incident|emergency",
+"infographics": "24;23",
 "source": "Application Form – vulnerability assessment",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Идентифицира екологични горещи точки и рискове",
+"text_tr": "Çevresel sıcak noktaları ve riskleri belirler",
+"text_uk": "Визначає екологічні «гарячі точки» та ризики"
 },
 {
 "id": "GOV-S3",
@@ -157,11 +220,16 @@ const SEED = [
 "text_en": "Supports regional cooperation and the coherence of marine strategies (e.g. MSFD, EU Green Deal, Bucharest Convention, BS SAP)",
 "text_ro": "Sprijină cooperarea regională și coerența strategiilor marine (ex. DCSMM, Pactul Verde European, Convenția de la București, BS SAP)",
 "tool": "",
+"match": "cross-border|policy|governance",
+"infographics": "09",
 "source": "Application Form; Black Sea Commission (LBS AG)",
 "status": "To check",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": "MSFD applies only to RO and BG – Bucharest Convention / BS SAP added for TR, UA, GE. Confirm wording."
+"notes": "MSFD applies only to RO and BG – Bucharest Convention / BS SAP added for TR, UA, GE. Confirm wording.",
+"text_bg": "Подкрепя регионалното сътрудничество и съгласуваността на морските стратегии (напр. РДМС, Европейски зелен пакт, Букурещка конвенция, BS SAP)",
+"text_tr": "Bölgesel işbirliğini ve deniz stratejilerinin tutarlılığını destekler (örn. Deniz Stratejisi Çerçeve Direktifi, Avrupa Yeşil Mutabakatı, Bükreş Sözleşmesi, BS SAP)",
+"text_uk": "Підтримує регіональну співпрацю та узгодженість морських стратегій (напр. Рамкова директива про морську стратегію, Європейський зелений курс, Бухарестська конвенція, BS SAP)"
 },
 {
 "id": "BUS-C1",
@@ -170,11 +238,16 @@ const SEED = [
 "text_en": "Reducing impacts from shipping (e.g. underwater noise, emissions, accidental spills)",
 "text_ro": "Reducerea impactului transportului maritim (ex. zgomot subacvatic, emisii, deversări accidentale)",
 "tool": "",
+"match": "maritime transport|incident|emergency",
+"infographics": "21",
 "source": "Application Form – transport sector",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Намаляване на въздействието от корабоплаването (напр. подводен шум, емисии, аварийни разливи)",
+"text_tr": "Deniz taşımacılığının etkilerinin azaltılması (örn. su altı gürültüsü, emisyonlar, kaza sonucu dökülmeler)",
+"text_uk": "Зменшення впливу судноплавства (напр. підводний шум, викиди, аварійні розливи)"
 },
 {
 "id": "BUS-C2",
@@ -183,11 +256,16 @@ const SEED = [
 "text_en": "Ensuring sustainable fisheries and aquaculture",
 "text_ro": "Asigurarea unui pescuit și a unei acvaculturi durabile",
 "tool": "",
+"match": "fisheries|aquaculture",
+"infographics": "08;14",
 "source": "Application Form – overfishing; fisheries and aquaculture sectors",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": "Challenge only – no project tool targets fisheries directly"
+"notes": "Challenge only – no project tool targets fisheries directly",
+"text_bg": "Осигуряване на устойчиво рибарство и аквакултури",
+"text_tr": "Sürdürülebilir balıkçılık ve su ürünleri yetiştiriciliğinin sağlanması",
+"text_uk": "Забезпечення сталого рибальства та аквакультури"
 },
 {
 "id": "BUS-C3",
@@ -196,11 +274,16 @@ const SEED = [
 "text_en": "Minimising pollution from industrial and coastal activities (e.g. chemicals, plastics, wastewater)",
 "text_ro": "Minimizarea poluării generate de activitățile industriale și costiere (ex. substanțe chimice, plastic, ape uzate)",
 "tool": "",
+"match": "pollution|contaminant|water quality",
+"infographics": "20",
 "source": "Application Form – pollution from contaminants",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Свеждане до минимум на замърсяването от промишлени и крайбрежни дейности (напр. химикали, пластмаси, отпадъчни води)",
+"text_tr": "Endüstriyel ve kıyı faaliyetlerinden kaynaklanan kirliliğin en aza indirilmesi (örn. kimyasallar, plastikler, atık sular)",
+"text_uk": "Мінімізація забруднення від промислової та прибережної діяльності (напр. хімічні речовини, пластик, стічні води)"
 },
 {
 "id": "BUS-C4",
@@ -209,11 +292,16 @@ const SEED = [
 "text_en": "Balancing economic growth with ecosystem conservation",
 "text_ro": "Echilibrarea creșterii economice cu conservarea ecosistemelor",
 "tool": "",
+"match": "blue economy|socio-economic|spatial planning",
+"infographics": "05;19",
 "source": "Application Form – sustainable blue economy",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Балансиране на икономическия растеж с опазването на екосистемите",
+"text_tr": "Ekonomik büyüme ile ekosistemlerin korunması arasında denge kurulması",
+"text_uk": "Збалансування економічного зростання та збереження екосистем"
 },
 {
 "id": "BUS-C5",
@@ -222,11 +310,16 @@ const SEED = [
 "text_en": "Adopting cleaner technologies and green practices",
 "text_ro": "Adoptarea unor tehnologii mai curate și a practicilor verzi",
 "tool": "",
+"match": "digital|technolog|blue economy",
+"infographics": "19",
 "source": "Application Form – adoption of advanced technologies and sustainable practices",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Въвеждане на по-чисти технологии и зелени практики",
+"text_tr": "Daha temiz teknolojilerin ve yeşil uygulamaların benimsenmesi",
+"text_uk": "Впровадження чистіших технологій та «зелених» практик"
 },
 {
 "id": "BUS-S1",
@@ -235,11 +328,16 @@ const SEED = [
 "text_en": "Provides data and tools for environmental risk assessment (e.g. WebGIS, monitoring, models)",
 "text_ro": "Oferă date și instrumente pentru evaluarea riscurilor de mediu (ex. WebGIS, monitorizare, modele)",
 "tool": "WebGIS; Passive acoustics; Modelling",
+"match": "risk|monitoring|gis|data",
+"infographics": "22;24",
 "source": "Application Form – suite of tools",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Предоставя данни и инструменти за оценка на екологичния риск (напр. WebGIS, мониторинг, модели)",
+"text_tr": "Çevresel risk değerlendirmesi için veri ve araçlar sağlar (örn. WebGIS, izleme, modeller)",
+"text_uk": "Надає дані та інструменти для оцінки екологічних ризиків (напр. WebGIS, моніторинг, моделі)"
 },
 {
 "id": "BUS-S2",
@@ -248,11 +346,16 @@ const SEED = [
 "text_en": "Supports best practices and innovative solutions for lower environmental impact",
 "text_ro": "Promovează bune practici și soluții inovatoare pentru un impact redus asupra mediului",
 "tool": "Guidelines & best practices",
+"match": "",
+"infographics": "14",
 "source": "Application Form – guidelines and best practices",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Подкрепя добри практики и иновативни решения за по-ниско въздействие върху околната среда",
+"text_tr": "Daha düşük çevresel etki için iyi uygulamaları ve yenilikçi çözümleri destekler",
+"text_uk": "Підтримує найкращі практики та інноваційні рішення для зменшення впливу на довкілля"
 },
 {
 "id": "BUS-S3",
@@ -261,11 +364,16 @@ const SEED = [
 "text_en": "Helps identify opportunities for a sustainable and resilient blue economy",
 "text_ro": "Ajută la identificarea oportunităților pentru o economie albastră durabilă și rezilientă",
 "tool": "",
+"match": "blue economy|socio-economic|fisheries",
+"infographics": "14",
 "source": "Application Form – smart and sustainable blue economy",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Помага за идентифициране на възможности за устойчива и издръжлива синя икономика",
+"text_tr": "Sürdürülebilir ve dirençli bir mavi ekonomi için fırsatların belirlenmesine yardımcı olur",
+"text_uk": "Допомагає визначити можливості для сталої та стійкої блакитної економіки"
 },
 {
 "id": "CIV-C1",
@@ -274,11 +382,16 @@ const SEED = [
 "text_en": "Raising awareness about threats to the Black Sea",
 "text_ro": "Creșterea gradului de conștientizare privind amenințările la adresa Mării Negre",
 "tool": "",
+"match": "communication|outreach|awareness",
+"infographics": "23;03",
 "source": "Dissemination Plan",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Повишаване на осведомеността за заплахите за Черно море",
+"text_tr": "Karadeniz'e yönelik tehditler konusunda farkındalığın artırılması",
+"text_uk": "Підвищення обізнаності щодо загроз для Чорного моря"
 },
 {
 "id": "CIV-C2",
@@ -287,11 +400,16 @@ const SEED = [
 "text_en": "Promoting responsible behaviour and reducing marine litter (e.g. plastics, waste)",
 "text_ro": "Promovarea comportamentului responsabil și reducerea deșeurilor marine (ex. plastic, deșeuri)",
 "tool": "",
+"match": "pollution|citizen science|outreach",
+"infographics": "20;03",
 "source": "Infographic only",
 "status": "To check",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": "Marine litter is not among the listed project methods – confirm a project activity covers it"
+"notes": "Marine litter is not among the listed project methods – confirm a project activity covers it",
+"text_bg": "Насърчаване на отговорно поведение и намаляване на морските отпадъци (напр. пластмаси, отпадъци)",
+"text_tr": "Sorumlu davranışın teşvik edilmesi ve deniz çöplerinin azaltılması (örn. plastikler, atıklar)",
+"text_uk": "Заохочення відповідальної поведінки та зменшення морського сміття (напр. пластик, відходи)"
 },
 {
 "id": "CIV-C3",
@@ -300,11 +418,16 @@ const SEED = [
 "text_en": "Supporting conservation of biodiversity and habitats",
 "text_ro": "Sprijinirea conservării biodiversității și habitatelor",
 "tool": "",
+"match": "biodiversity|nature|protection of marine|reserve",
+"infographics": "02;01",
 "source": "Application Form – habitat destruction, biodiversity",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Подкрепа за опазването на биологичното разнообразие и местообитанията",
+"text_tr": "Biyoçeşitlilik ve habitatların korunmasının desteklenmesi",
+"text_uk": "Підтримка збереження біорізноманіття та оселищ"
 },
 {
 "id": "CIV-C4",
@@ -313,11 +436,16 @@ const SEED = [
 "text_en": "Ensuring access to information and citizen participation",
 "text_ro": "Asigurarea accesului la informație și a participării cetățenilor",
 "tool": "",
+"match": "communication|outreach|citizen",
+"infographics": "03;22",
 "source": "Application Form – collaboration with citizens",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Осигуряване на достъп до информация и гражданско участие",
+"text_tr": "Bilgiye erişimin ve vatandaş katılımının sağlanması",
+"text_uk": "Забезпечення доступу до інформації та участі громадян"
 },
 {
 "id": "CIV-C5",
@@ -326,11 +454,16 @@ const SEED = [
 "text_en": "Building local stewardship and involvement in solutions",
 "text_ro": "Dezvoltarea responsabilității locale și a implicării în soluții",
 "tool": "",
+"match": "nature|citizen|engagement",
+"infographics": "03",
 "source": "Application Form – NGO community engagement",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Изграждане на местна отговорност и ангажираност в решенията",
+"text_tr": "Yerel sahiplenmenin ve çözümlere katılımın geliştirilmesi",
+"text_uk": "Розвиток місцевої відповідальності та залучення до рішень"
 },
 {
 "id": "CIV-S1",
@@ -339,11 +472,16 @@ const SEED = [
 "text_en": "Provides accessible information and visual tools (e.g. WebGIS, educational materials)",
 "text_ro": "Oferă informații accesibile și instrumente vizuale (ex. WebGIS, materiale educaționale)",
 "tool": "WebGIS; Black Sea Quiz",
+"match": "",
+"infographics": "22",
 "source": "Application Form – user-friendly WebGIS; Dissemination Plan",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Предоставя достъпна информация и визуални инструменти (напр. WebGIS, образователни материали)",
+"text_tr": "Erişilebilir bilgi ve görsel araçlar sağlar (örn. WebGIS, eğitim materyalleri)",
+"text_uk": "Надає доступну інформацію та візуальні інструменти (напр. WebGIS, освітні матеріали)"
 },
 {
 "id": "CIV-S2",
@@ -352,11 +490,16 @@ const SEED = [
 "text_en": "Engages communities in monitoring and citizen science (e.g. marine litter, invasive species)",
 "text_ro": "Implică comunitățile în monitorizare și știința cetățenească (ex. deșeuri marine, specii invazive)",
 "tool": "eDNA; Underwater cameras",
+"match": "citizen science|biodiversity|monitoring",
+"infographics": "03;01;25",
 "source": "Infographic only",
 "status": "To check",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": "Citizen science / marine litter not in Application Form methods – confirm, or reword to 'invasive species (eDNA, underwater cameras)'"
+"notes": "Citizen science / marine litter not in Application Form methods – confirm, or reword to 'invasive species (eDNA, underwater cameras)'",
+"text_bg": "Ангажира общностите в мониторинг и гражданска наука (напр. морски отпадъци, инвазивни видове)",
+"text_tr": "Toplulukları izleme ve vatandaş bilimine dahil eder (örn. deniz çöpleri, istilacı türler)",
+"text_uk": "Залучає громади до моніторингу та громадянської науки (напр. морське сміття, інвазивні види)"
 },
 {
 "id": "CIV-S3",
@@ -365,11 +508,16 @@ const SEED = [
 "text_en": "Increases awareness about marine challenges and solutions",
 "text_ro": "Crește gradul de conștientizare privind provocările și soluțiile marine",
 "tool": "Black Sea Caravan; Social media",
+"match": "communication|outreach|awareness",
+"infographics": "23",
 "source": "Dissemination Plan",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Повишава осведомеността за морските предизвикателства и решения",
+"text_tr": "Denizel sorunlar ve çözümler konusunda farkındalığı artırır",
+"text_uk": "Підвищує обізнаність щодо морських викликів та рішень"
 },
 {
 "id": "CIV-S4",
@@ -378,11 +526,16 @@ const SEED = [
 "text_en": "Strengthens the connection between people and a healthy Black Sea",
 "text_ro": "Întărește legătura dintre oameni și o Mare Neagră sănătoasă",
 "tool": "",
+"match": "",
+"infographics": "03",
 "source": "Dissemination Plan",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Укрепва връзката между хората и едно здраво Черно море",
+"text_tr": "İnsanlar ile sağlıklı bir Karadeniz arasındaki bağı güçlendirir",
+"text_uk": "Зміцнює зв'язок між людьми та здоровим Чорним морем"
 },
 {
 "id": "RES-C1",
@@ -391,11 +544,16 @@ const SEED = [
 "text_en": "Disparities in research and innovation capacities between riparian countries",
 "text_ro": "Diferențele de capacitate de cercetare și inovare între țările riverane",
 "tool": "",
+"match": "",
+"infographics": "15",
 "source": "Application Form – project summary",
 "status": "Proposed",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": "New group – not on the infographic"
+"notes": "New group – not on the infographic",
+"text_bg": "Различия в капацитета за научни изследвания и иновации между крайбрежните държави",
+"text_tr": "Kıyıdaş ülkeler arasındaki araştırma ve inovasyon kapasitesi farklılıkları",
+"text_uk": "Відмінності в дослідницькому та інноваційному потенціалі між причорноморськими країнами"
 },
 {
 "id": "RES-C2",
@@ -404,11 +562,16 @@ const SEED = [
 "text_en": "Harmonising methods and sharing data across borders",
 "text_ro": "Armonizarea metodelor și schimbul transfrontalier de date",
 "tool": "",
+"match": "monitoring|data|gis|cross-border",
+"infographics": "22;13",
 "source": "Application Form – collaborative studies",
 "status": "Proposed",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": "New group – not on the infographic"
+"notes": "New group – not on the infographic",
+"text_bg": "Хармонизиране на методите и трансграничен обмен на данни",
+"text_tr": "Yöntemlerin uyumlaştırılması ve sınır ötesi veri paylaşımı",
+"text_uk": "Гармонізація методів та транскордонний обмін даними"
 },
 {
 "id": "RES-S1",
@@ -417,11 +580,16 @@ const SEED = [
 "text_en": "Joint collaborative studies by research organisations from Bulgaria, Romania, Türkiye and Ukraine",
 "text_ro": "Studii comune realizate de organizații de cercetare din Bulgaria, România, Turcia și Ucraina",
 "tool": "Virtual joint cruise",
+"match": "monitoring|ecology|biodiversity|pollution",
+"infographics": "07;26",
 "source": "Application Form – collaborative studies",
 "status": "Proposed",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Съвместни изследвания на научни организации от България, Румъния, Турция и Украйна",
+"text_tr": "Bulgaristan, Romanya, Türkiye ve Ukrayna'dan araştırma kuruluşlarının ortak çalışmaları",
+"text_uk": "Спільні дослідження наукових організацій з Болгарії, Румунії, Туреччини та України"
 },
 {
 "id": "RES-S2",
@@ -430,11 +598,16 @@ const SEED = [
 "text_en": "Training on new tools: eDNA, passive samplers, passive acoustics, remote sensing, machine learning",
 "text_ro": "Instruire privind noile instrumente: eDNA, eșantionatoare pasive, acustică pasivă, teledetecție, învățare automată",
 "tool": "eDNA; Passive samplers; Passive acoustics; Remote sensing; Machine learning",
+"match": "monitoring|gis|data|digital|ecology",
+"infographics": "11;12;13;18;25",
 "source": "Application Form – training sessions",
 "status": "Proposed",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Обучение за нови инструменти: eDNA, пасивни пробовземачи, пасивна акустика, дистанционни изследвания, машинно обучение",
+"text_tr": "Yeni araçlar konusunda eğitim: eDNA, pasif örnekleyiciler, pasif akustik, uzaktan algılama, makine öğrenmesi",
+"text_uk": "Навчання роботі з новими інструментами: eDNA, пасивні пробовідбірники, пасивна акустика, дистанційне зондування, машинне навчання"
 },
 {
 "id": "SOL-1",
@@ -443,11 +616,16 @@ const SEED = [
 "text_en": "Cleaner waters and reduced pollution",
 "text_ro": "Ape mai curate și poluare redusă",
 "tool": "",
+"match": "pollution|water quality",
+"infographics": "06;20",
 "source": "Infographic",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "По-чисти води и намалено замърсяване",
+"text_tr": "Daha temiz sular ve azalan kirlilik",
+"text_uk": "Чистіші води та менше забруднення"
 },
 {
 "id": "SOL-2",
@@ -456,11 +634,16 @@ const SEED = [
 "text_en": "Healthy marine biodiversity and habitats",
 "text_ro": "Biodiversitate și habitate marine sănătoase",
 "tool": "",
+"match": "biodiversity|nature|protection of marine",
+"infographics": "02;26",
 "source": "Infographic",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Здраво морско биоразнообразие и местообитания",
+"text_tr": "Sağlıklı deniz biyoçeşitliliği ve habitatları",
+"text_uk": "Здорове морське біорізноманіття та оселища"
 },
 {
 "id": "SOL-3",
@@ -469,11 +652,16 @@ const SEED = [
 "text_en": "Sustainable blue economy",
 "text_ro": "Economie albastră durabilă",
 "tool": "",
+"match": "blue economy|fisheries|maritime",
+"infographics": "14;08",
 "source": "Infographic",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Устойчива синя икономика",
+"text_tr": "Sürdürülebilir mavi ekonomi",
+"text_uk": "Стала блакитна економіка"
 },
 {
 "id": "SOL-4",
@@ -482,11 +670,16 @@ const SEED = [
 "text_en": "Increased resilience to climate change",
 "text_ro": "Reziliență crescută la schimbările climatice",
 "tool": "",
+"match": "climate|risk",
+"infographics": "04",
 "source": "Infographic",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Повишена устойчивост към изменението на климата",
+"text_tr": "İklim değişikliğine karşı artan dayanıklılık",
+"text_uk": "Підвищена стійкість до зміни клімату"
 },
 {
 "id": "SOL-5",
@@ -495,11 +688,16 @@ const SEED = [
 "text_en": "Stronger cooperation and informed decisions",
 "text_ro": "Cooperare consolidată și decizii informate",
 "tool": "",
+"match": "policy|governance|cross-border",
+"infographics": "10",
 "source": "Infographic",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "По-силно сътрудничество и информирани решения",
+"text_tr": "Daha güçlü işbirliği ve bilinçli kararlar",
+"text_uk": "Міцніша співпраця та обґрунтовані рішення"
 },
 {
 "id": "SOL-6",
@@ -508,28 +706,45 @@ const SEED = [
 "text_en": "Engaged communities and long-term stewardship",
 "text_ro": "Comunități implicate și responsabilitate pe termen lung",
 "tool": "",
+"match": "communication|outreach|citizen|engagement",
+"infographics": "03",
 "source": "Infographic",
 "status": "Verified",
 "checked_by": "Claude (vs. Application Form)",
 "date": "2026-10-22",
-"notes": ""
+"notes": "",
+"text_bg": "Ангажирани общности и дългосрочна отговорност",
+"text_tr": "Katılımcı topluluklar ve uzun vadeli sahiplenme",
+"text_uk": "Залучені громади та довгострокова відповідальність"
 }
 ];
+const LIB = [{"id": "01", "file": "01-marine-invasive-species.jpg", "title": "Marine invasive species", "cat": "P"}, {"id": "02", "file": "02-biodiversity-habitat-degradation.jpg", "title": "Biodiversity and habitat degradation", "cat": "P"}, {"id": "03", "file": "03-civil-society.jpg", "title": "Civil society: citizen science and marine litter prevention", "cat": "S"}, {"id": "04", "file": "04-climate-change-resilience.jpg", "title": "Climate change and ecosystem resilience", "cat": "P"}, {"id": "05", "file": "05-coastal-development.jpg", "title": "Coastal development and habitat loss", "cat": "P"}, {"id": "06", "file": "06-eutrophication-v1.jpg", "title": "Eutrophication in the Black Sea (v1)", "cat": "P"}, {"id": "07", "file": "07-eutrophication-v2.jpg", "title": "Eutrophication in the Black Sea (v2)", "cat": "P"}, {"id": "08", "file": "08-overfishing-fish-stocks.jpg", "title": "Overfishing and changes in fish stocks", "cat": "P"}, {"id": "09", "file": "09-governance-v1.jpg", "title": "Governance (v1)", "cat": "S"}, {"id": "10", "file": "10-governance-v2.jpg", "title": "Governance (v2)", "cat": "S"}, {"id": "11", "file": "11-passive-acoustic-monitoring.jpg", "title": "Passive acoustic monitoring", "cat": "T"}, {"id": "12", "file": "12-passive-sampling.jpg", "title": "Passive sampling", "cat": "T"}, {"id": "13", "file": "13-satellite-remote-sensing.jpg", "title": "Satellite remote sensing", "cat": "T"}, {"id": "14", "file": "14-business.jpg", "title": "Business: sustainable fisheries and aquaculture", "cat": "S"}, {"id": "15", "file": "15-three-stakeholders-v1.jpg", "title": "Three stakeholders – shared challenges (v1)", "cat": "S"}, {"id": "16", "file": "16-three-stakeholders-v2.jpg", "title": "Three stakeholders – shared challenges (v2)", "cat": "S"}, {"id": "17", "file": "17-three-stakeholders-v3.jpg", "title": "Three stakeholders – shared challenges (v3)", "cat": "S"}, {"id": "18", "file": "18-underwater-camera-monitoring.jpg", "title": "Underwater camera monitoring", "cat": "T"}, {"id": "19", "file": "19-offshore-energy.jpg", "title": "Offshore energy and seabed disturbance", "cat": "P"}, {"id": "20", "file": "20-marine-pollution-plastic.jpg", "title": "Marine pollution and plastic litter", "cat": "P"}, {"id": "21", "file": "21-shipping-underwater-noise.jpg", "title": "Shipping and underwater noise", "cat": "P"}, {"id": "22", "file": "22-webgis-platform.jpg", "title": "WebGIS platform", "cat": "T"}, {"id": "23", "file": "23-multiple-pressures.jpg", "title": "Multiple pressures on the Black Sea", "cat": "P"}, {"id": "24", "file": "24-cumulative-pressures.jpg", "title": "Cumulative environmental pressures", "cat": "P"}, {"id": "25", "file": "25-edna-monitoring.jpg", "title": "eDNA monitoring", "cat": "T"}, {"id": "26", "file": "26-invasive-species-transformation.jpg", "title": "Invasive species and ecosystem transformation", "cat": "P"}];
+const libById = id => LIB.find(x=>x.id==id);
 
 const GROUPS = [
- {key:'Governance',color:'var(--gov)',en:['Governance','Policies, regulations and cooperation'],ro:['Guvernanță','Politici, reglementări și cooperare'],aud:['Local public authority','National public authority','Regional public authority']},
- {key:'Business',color:'var(--bus)',en:['Business','Sustainable and responsible activities'],ro:['Mediul de afaceri','Activități durabile și responsabile'],aud:['SME','Business support organisation']},
- {key:'Civil Society',color:'var(--civ)',en:['Civil Society','Awareness, participation and stewardship'],ro:['Societatea civilă','Conștientizare, participare și responsabilitate'],aud:['Interest groups including NGOs','Education / training center and school','General public']},
- {key:'Research',color:'var(--res)',en:['Research & Academia','Knowledge, methods and capacity'],ro:['Cercetare și mediul academic','Cunoaștere, metode și capacitate'],aud:['Higher education and research organisations']}
+ {key:'Governance',img:'10',color:'var(--gov)',en:['Governance','Policies, regulations and cooperation'],ro:['Guvernanță','Politici, reglementări și cooperare'],bg:['Управление','Политики, регулации и сътрудничество'],tr:['Yönetişim','Politikalar, düzenlemeler ve işbirliği'],uk:['Врядування','Політика, регулювання та співпраця'],aud:['Local public authority','National public authority','Regional public authority']},
+ {key:'Business',img:'14',color:'var(--bus)',en:['Business','Sustainable and responsible activities'],ro:['Mediul de afaceri','Activități durabile și responsabile'],bg:['Бизнес','Устойчиви и отговорни дейности'],tr:['İş dünyası','Sürdürülebilir ve sorumlu faaliyetler'],uk:['Бізнес','Стала та відповідальна діяльність'],aud:['SME','Business support organisation']},
+ {key:'Civil Society',img:'03',color:'var(--civ)',en:['Civil Society','Awareness, participation and stewardship'],ro:['Societatea civilă','Conștientizare, participare și responsabilitate'],bg:['Гражданско общество','Осведоменост, участие и отговорност'],tr:['Sivil toplum','Farkındalık, katılım ve sahiplenme'],uk:['Громадянське суспільство','Обізнаність, участь та відповідальність'],aud:['Interest groups including NGOs','Education / training center and school','General public']},
+ {key:'Research',img:'',color:'var(--res)',en:['Research & Academia','Knowledge, methods and capacity'],ro:['Cercetare și mediul academic','Cunoaștere, metode și capacitate'],bg:['Наука и академични среди','Знания, методи и капацитет'],tr:['Araştırma ve akademi','Bilgi, yöntemler ve kapasite'],uk:['Наука та академічна спільнота','Знання, методи та спроможність'],aud:['Higher education and research organisations']}
 ];
 const T = {
- en:{ch:'Key challenges',sup:'How ANEMONE PLUS supports',shared:'Shared solutions for key challenges',all:'All',Verified:'Verified',"To check":'To check',Proposed:'Proposed',search:'Search statements, tools, sources…',stk:'stakeholders in database',total:'Statements',src:'Source',chk:'Checked by',notes:'Notes',
-   note:'Click any statement to see its source and verification notes. Status is managed in the "Challenges" sheet (Verified / To check / Proposed).'},
- ro:{ch:'Provocări principale',sup:'Cum sprijină ANEMONE PLUS',shared:'Soluții comune pentru provocările principale',all:'Toate',Verified:'Verificat',"To check":'De verificat',Proposed:'Propus',search:'Caută afirmații, instrumente, surse…',stk:'actori în baza de date',total:'Afirmații',src:'Sursă',chk:'Verificat de',notes:'Note',
-   note:'Faceți clic pe o afirmație pentru a vedea sursa și notele de verificare. Statusul se gestionează în foaia „Challenges” (Verified / To check / Proposed).'}
+ en:{rig:'Related infographics',lib:'Infographics library',cats:{all:'All',P:'Pressures',T:'Monitoring tools',S:'Stakeholders'},linked:'Linked stakeholders',showall:'Show all',showless:'Show fewer',matched:'matched by audience and area of interest / expertise',loading:'Loading stakeholders…',ch:'Key challenges',sup:'How ANEMONE PLUS supports',shared:'Shared solutions for key challenges',all:'All',Verified:'Verified',"To check":'To check',Proposed:'Proposed',search:'Search statements, tools, sources…',stk:'stakeholders in database',total:'Statements',src:'Source',chk:'Checked by',notes:'Notes',
+   info:['🖼️ Infographic: Three stakeholders – shared challenges','Open full size','Download'],note:'Click any statement to see its source and verification notes. Status is managed in the "Challenges" sheet (Verified / To check / Proposed).'},
+ ro:{rig:'Infografice asociate',lib:'Biblioteca de infografice',cats:{all:'Toate',P:'Presiuni',T:'Instrumente de monitorizare',S:'Actori'},linked:'Actori asociați',showall:'Arată toți',showless:'Arată mai puțini',matched:'selectați după tip de public și domeniu de interes / expertiză',loading:'Se încarcă actorii…',ch:'Provocări principale',sup:'Cum sprijină ANEMONE PLUS',shared:'Soluții comune pentru provocările principale',all:'Toate',Verified:'Verificat',"To check":'De verificat',Proposed:'Propus',search:'Caută afirmații, instrumente, surse…',stk:'actori în baza de date',total:'Afirmații',src:'Sursă',chk:'Verificat de',notes:'Note',
+   info:['🖼️ Infografic: Trei categorii de actori – provocări comune','Deschide la dimensiune completă','Descarcă'],note:'Faceți clic pe o afirmație pentru a vedea sursa și notele de verificare. Statusul se gestionează în foaia „Challenges” (Verified / To check / Proposed).'},
+ bg:{rig:'Свързани инфографики',lib:'Библиотека с инфографики',cats:{all:'Всички',P:'Натиск',T:'Инструменти за мониторинг',S:'Заинтересовани страни'},linked:'Свързани заинтересовани страни',showall:'Покажи всички',showless:'Покажи по-малко',matched:'избрани по аудитория и област на интерес / експертиза',loading:'Зареждане…',ch:'Основни предизвикателства',sup:'Как помага ANEMONE PLUS',shared:'Общи решения за основните предизвикателства',all:'Всички',Verified:'Проверено',"To check":'За проверка',Proposed:'Предложено',search:'Търсене на твърдения, инструменти, източници…',stk:'заинтересовани страни в базата данни',total:'Твърдения',src:'Източник',chk:'Проверено от',notes:'Бележки',
+   info:['🖼️ Инфографика: Три групи заинтересовани страни – общи предизвикателства','Отвори в пълен размер','Изтегли'],
+   note:'Кликнете върху твърдение, за да видите източника и бележките за проверка. Статусът се управлява в листа „Challenges“ (Verified / To check / Proposed).'},
+ tr:{rig:'İlgili infografikler',lib:'İnfografik kütüphanesi',cats:{all:'Tümü',P:'Baskılar',T:'İzleme araçları',S:'Paydaşlar'},linked:'İlgili paydaşlar',showall:'Tümünü göster',showless:'Daha az göster',matched:'hedef kitle ve ilgi / uzmanlık alanına göre eşleştirildi',loading:'Paydaşlar yükleniyor…',ch:'Temel sorunlar',sup:'ANEMONE PLUS nasıl destekliyor',shared:'Temel sorunlar için ortak çözümler',all:'Tümü',Verified:'Doğrulandı',"To check":'Kontrol edilecek',Proposed:'Önerildi',search:'İfade, araç veya kaynak ara…',stk:'paydaş veri tabanında',total:'İfadeler',src:'Kaynak',chk:'Kontrol eden',notes:'Notlar',
+   info:['🖼️ İnfografik: Üç paydaş grubu – ortak sorunlar','Tam boyutta aç','İndir'],
+   note:'Kaynağı ve doğrulama notlarını görmek için bir ifadeye tıklayın. Durum, "Challenges" sayfasında yönetilir (Verified / To check / Proposed).'},
+ uk:{rig:'Пов’язана інфографіка',lib:'Бібліотека інфографіки',cats:{all:'Усі',P:'Тиски',T:'Інструменти моніторингу',S:'Зацікавлені сторони'},linked:'Пов’язані зацікавлені сторони',showall:'Показати всіх',showless:'Показати менше',matched:'відібрано за аудиторією та сферою інтересів / експертизою',loading:'Завантаження…',ch:'Основні виклики',sup:'Як допомагає ANEMONE PLUS',shared:'Спільні рішення для основних викликів',all:'Усі',Verified:'Перевірено',"To check":'Потребує перевірки',Proposed:'Запропоновано',search:'Пошук тверджень, інструментів, джерел…',stk:'зацікавлених сторін у базі даних',total:'Твердження',src:'Джерело',chk:'Перевірив',notes:'Примітки',
+   info:['🖼️ Інфографіка: Три групи зацікавлених сторін – спільні виклики','Відкрити в повному розмірі','Завантажити'],
+   note:'Натисніть на твердження, щоб побачити джерело та примітки щодо перевірки. Статус керується в аркуші «Challenges» (Verified / To check / Proposed).'}
 };
-let rows = SEED, lang = 'en', filt = 'all', q = '', counts = {};
+let libCat = 'all', rows = SEED, lang = 'en', filt = 'all', q = '', counts = {}, STK = [], openIds = new Set(), allIds = new Set();
 try{ lang = localStorage.getItem('chLang') || 'en'; }catch(e){}
+if(!['en','ro','bg','tr','uk'].includes(lang)) lang='en';
 
 function parseCSV(s){
   const out=[];let row=[],f='',i=0,qt=false;
@@ -544,24 +759,59 @@ function parseCSV(s){
   return out.filter(r=>r.some(x=>x.trim())).map(r=>Object.fromEntries(h.map((k,j)=>[k,(r[j]||'').trim()])));
 }
 const esc = s => String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const txt = r => (lang=='ro' && r.text_ro) ? r.text_ro : r.text_en;
+const LANGS=[['en','EN'],['ro','RO'],['bg','BG'],['tr','TR'],['uk','UA']];
+const txt = r => r['text_'+lang] || r.text_en;
 const stCls = s => 'b-' + (s||'To check').split(' ')[0];
 const match = r => (filt=='all' || r.status==filt) &&
-  (!q || [r.text_en,r.text_ro,r.tool,r.source,r.notes,r.id].join(' ').toLowerCase().includes(q));
+  (!q || [r.text_en,r.text_ro,r.text_bg,r.text_tr,r.text_uk,r.tool,r.source,r.notes,r.id].join(' ').toLowerCase().includes(q));
 
+const CATORD={'Manage closely':0,'Keep satisfied':1,'Consult with':2,'Keep informed':3};
+const CATCLS={'Manage closely':'d-mc','Keep satisfied':'d-ks','Consult with':'d-cw','Keep informed':'d-ki'};
+const ALLAUD=GROUPS.flatMap(g=>g.aud);
+function linked(r){
+  const g=GROUPS.find(x=>x.key==r.group); const aud=g?g.aud:ALLAUD;
+  let pool=STK.filter(s=>aud.includes(s.audience));
+  const keys=(r.match||'').toLowerCase().split('|').map(x=>x.trim()).filter(Boolean);
+  if(keys.length){const m=pool.filter(s=>{const t=((s.aoi||'')+' '+(s.expertise||'')).toLowerCase();return keys.some(k=>t.includes(k));}); if(m.length) pool=m;}
+  return pool.sort((a,b)=>(CATORD[a.category]??9)-(CATORD[b.category]??9)||(+b.influence||0)-(+a.influence||0)||String(a.name).localeCompare(b.name));
+}
+function stkHTML(r){
+  const L=T[lang];
+  if(!counts.__ok) return `<div class="stk"><b>${L.loading}</b></div>`;
+  const list=linked(r), full=allIds.has(r.id), show=full?list:list.slice(0,8);
+  return `<div class="stk"><b>${L.linked} (${list.length})</b><ul>${show.map(s=>`<li><span class="dot ${CATCLS[s.category]||''}" title="${esc(s.category)}"></span>${esc(s.name)}<span class="c">${esc(s.country)}</span></li>`).join('')}</ul>
+    ${list.length>8?`<button onclick="event.stopPropagation();toggleAll('${r.id}')">${full?L.showless:L.showall}</button>`:''}
+    <div class="leg">${L.matched}</div></div>`;
+}
+function rigHTML(r){
+  const items=String(r.infographics||'').split(/[;,\s]+/).map(x=>x.trim().padStart(2,'0')).map(libById).filter(Boolean);
+  if(!items.length) return '';
+  return `<div class="stk"><b>${T[lang].rig}</b><div class="rig">${items.map(i=>`<a href="infographics/${i.file}" target="_blank" rel="noopener"><img loading="lazy" src="infographics/thumbs/${i.file}" alt=""><span>${esc(i.title)}</span></a>`).join('')}</div></div>`;
+}
+function renderLib(){
+  const L=T[lang];
+  document.getElementById('libT').textContent=L.lib;
+  const bar=document.getElementById('libBar');
+  bar.innerHTML=['all','P','T','S'].map(c=>`<button class="chip ${libCat==c?'on':''}" data-c="${c}">${L.cats[c]} (${c=='all'?LIB.length:LIB.filter(x=>x.cat==c).length})</button>`).join('');
+  bar.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{libCat=b.dataset.c;renderLib();});
+  document.getElementById('lgrid').innerHTML=LIB.filter(x=>libCat=='all'||x.cat==libCat).map(i=>`<a class="lcard" href="infographics/${i.file}" target="_blank" rel="noopener"><img loading="lazy" src="infographics/thumbs/${i.file}" alt=""><span>${esc(i.title)}</span></a>`).join('');
+}
+function toggleAll(id){allIds.has(id)?allIds.delete(id):allIds.add(id);renderCols();}
+function toggleOpen(id){openIds.has(id)?openIds.delete(id):openIds.add(id);renderCols();}
 function itemHTML(r,color){
   const L=T[lang];
   const tools=(r.tool||'').split(';').map(x=>x.trim()).filter(Boolean).map(x=>`<span class="tag">${esc(x)}</span>`).join('');
-  return `<div class="item" style="border-left-color:${color}" onclick="this.classList.toggle('open')">
+  return `<div class="item ${openIds.has(r.id)?'open':''}" style="border-left-color:${color}" onclick="if(!event.target.closest('a,button'))toggleOpen('${r.id}')">
     ${esc(txt(r))}
     <div class="meta"><span class="badge ${stCls(r.status)}">${esc(L[r.status]||r.status)}</span>${tools}<span class="id">${esc(r.id)}</span></div>
-    <div class="det"><b>${L.src}:</b> ${esc(r.source)||'—'}<br><b>${L.chk}:</b> ${esc(r.checked_by)||'—'} ${esc(r.date)}${r.notes?`<br><b>${L.notes}:</b> ${esc(r.notes)}`:''}</div>
+    <div class="det"><b>${L.src}:</b> ${esc(r.source)||'—'}<br><b>${L.chk}:</b> ${esc(r.checked_by)||'—'} ${esc(r.date)}${r.notes?`<br><b>${L.notes}:</b> ${esc(r.notes)}`:''}${openIds.has(r.id)?rigHTML(r)+stkHTML(r):''}</div>
   </div>`;
 }
 function render(){
   const L=T[lang];
-  document.getElementById('lEN').classList.toggle('on',lang=='en');
-  document.getElementById('lRO').classList.toggle('on',lang=='ro');
+  const lg=document.getElementById('langs');
+  lg.innerHTML=LANGS.map(([k,l])=>`<button class="hbtn ${lang==k?'on':''}" data-l="${k}">${l}</button>`).join('');
+  lg.querySelectorAll('button').forEach(b=>b.onclick=()=>{lang=b.dataset.l;try{localStorage.setItem('chLang',lang)}catch(e){};render();});
   document.documentElement.lang=lang;
   // summary
   const n=s=>rows.filter(r=>r.status==s).length, tot=rows.length;
@@ -576,6 +826,8 @@ function render(){
   const qi=bar.querySelector('#q'); qi.oninput=e=>{q=e.target.value.toLowerCase();renderCols();};
   renderCols();
   document.getElementById('note').textContent=L.note;
+  renderLib();
+  document.getElementById('infoT').textContent=L.info[0];document.getElementById('infoOpen').textContent=L.info[1];document.getElementById('infoDl').textContent=L.info[2];
 }
 function renderCols(){
   const L=T[lang];
@@ -586,14 +838,13 @@ function renderCols(){
     return `<section class="col"><div class="hd" style="background:${g.color}">
       <h2>${g[lang][0]}</h2><p>${g[lang][1]}</p>
       <span class="cnt" title="${esc(g.aud.join(', '))}">${counts.__ok?c:'…'} ${L.stk}</span></div>
+      ${g.img?`<a href="infographics/${libById(g.img).file}" target="_blank" rel="noopener"><img class="gimg" loading="lazy" src="infographics/thumbs/${libById(g.img).file}" alt="${esc(g[lang][0])}"></a>`:''}
       <div class="sec"><h3 style="color:${g.color}">${L.ch}</h3>${ch.map(r=>itemHTML(r,g.color)).join('')||'<div class="empty">—</div>'}</div>
       <div class="sec"><h3 style="color:${g.color}">${L.sup}</h3>${sp.map(r=>itemHTML(r,g.color)).join('')||'<div class="empty">—</div>'}</div>
     </section>`;}).join('');
   document.getElementById('sharedT').textContent=L.shared;
   document.getElementById('sgrid').innerHTML=rows.filter(r=>r.type=='Solution'&&match(r)).map(r=>itemHTML(r,'var(--navy2)')).join('');
 }
-document.getElementById('lEN').onclick=()=>{lang='en';try{localStorage.setItem('chLang',lang)}catch(e){};render();};
-document.getElementById('lRO').onclick=()=>{lang='ro';try{localStorage.setItem('chLang',lang)}catch(e){};render();};
 render();
 
 // live data: challenges sheet (optional) + stakeholder counts
@@ -601,7 +852,7 @@ if(SHEET_CSV_URL){
   fetch(SHEET_CSV_URL).then(r=>r.text()).then(t=>{const p=parseCSV(t); if(p.length){rows=p;render();}}).catch(e=>console.warn('Challenges sheet not loaded, using built-in data',e));
 }
 fetch(STAKEHOLDER_API).then(r=>r.json()).then(j=>{
-  (j.data||[]).forEach(s=>{counts[s.audience]=(counts[s.audience]||0)+1}); counts.__ok=true; renderCols();
+  STK=j.data||[]; STK.forEach(s=>{counts[s.audience]=(counts[s.audience]||0)+1}); counts.__ok=true; renderCols();
 }).catch(e=>console.warn('Stakeholder counts not loaded',e));
 </script>
 </body>
