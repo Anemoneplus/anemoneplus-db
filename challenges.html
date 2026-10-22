@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stakeholder Challenges · ANEMONE PLUS</title>
+<style>
+:root{--navy1:#0f1e33;--navy2:#1e3a5f;--bg:#f1f5f9;--ink:#1a2b3c;--muted:#5b6b7c;--line:#e2e8f0;
+--gov:#1d4f91;--bus:#e0620d;--civ:#1f6b45;--res:#6b3fa0;--ok:#15803d;--chk:#c2410c;--prop:#6b3fa0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:linear-gradient(90deg,var(--navy1),var(--navy2));color:#fff;padding:10px 22px;display:flex;align-items:center;gap:12px;min-height:70px}
+header img{height:46px;border-radius:4px;background:#fff}
+header .t{flex:1}header h1{margin:0;font-size:17px;letter-spacing:.02em}header small{opacity:.65;font-size:12px}
+.hbtn{background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:14px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.hbtn.on{background:#fff;color:var(--navy2);font-weight:600}
+main{max-width:1500px;margin:0 auto;padding:16px 22px 40px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 14px;font-size:14px;cursor:pointer;color:var(--ink)}
+.chip.on{background:var(--navy2);color:#fff;border-color:var(--navy2)}
+.bar input{flex:1;min-width:200px;border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px}
+.summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 16px;min-width:130px}
+.stat b{display:block;font-size:22px}.stat span{font-size:12px;color:var(--muted)}
+.prog{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:6px;display:flex}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media(max-width:1200px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.grid{grid-template-columns:1fr}main{padding:12px 16px}header{flex-wrap:wrap}}
+.col{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.col .hd{color:#fff;padding:12px 14px}
+.col .hd h2{margin:0;font-size:17px;letter-spacing:.03em;text-transform:uppercase}
+.col .hd p{margin:3px 0 0;font-size:12.5px;opacity:.9}
+.col .hd .cnt{display:inline-block;margin-top:8px;background:rgba(255,255,255,.2);border-radius:12px;padding:3px 10px;font-size:12px}
+.sec{padding:10px 14px 4px}
+.sec h3{margin:0 0 8px;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.item{border:1px solid var(--line);border-left-width:4px;border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:13.5px;line-height:1.35;cursor:pointer}
+.item:hover{background:#f8fafc}
+.item .meta{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;align-items:center}
+.badge{font-size:11px;font-weight:600;border-radius:10px;padding:2px 8px}
+.b-Verified{background:#dcfce7;color:var(--ok)}.b-To{background:#ffedd5;color:var(--chk)}.b-Proposed{background:#ede9fe;color:var(--prop)}
+.tag{font-size:11px;background:#f1f5f9;color:var(--muted);border-radius:10px;padding:2px 7px}
+.id{font-size:10.5px;color:var(--muted);font-family:ui-monospace,Consolas,monospace}
+.det{display:none;margin-top:6px;font-size:12px;color:var(--muted);border-top:1px dashed var(--line);padding-top:6px}
+.item.open .det{display:block}
+.shared{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.shared h3{margin:0 0 10px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--navy2)}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.sgrid .item{margin:0;border-left-color:var(--navy2)}
+.note{font-size:12px;color:var(--muted);margin-top:14px}
+.empty{font-size:12.5px;color:var(--muted);padding:4px 0 10px}
+</style>
+</head>
+<body>
+<header>
+  <img src="logo.png" alt="ANEMONE PLUS">
+  <div class="t"><h1>ANEMONE PLUS</h1><small>BSB00949 · Stakeholder Challenges &amp; Support</small></div>
+  <button class="hbtn on" id="lEN">EN</button><button class="hbtn" id="lRO">RO</button>
+  <a class="hbtn" href="./">← Back to Stakeholder Database</a>
+</header>
+<main>
+  <div class="summary" id="summary"></div>
+  <div class="bar" id="bar"></div>
+  <div class="grid" id="grid"></div>
+  <div class="shared"><h3 id="sharedT"></h3><div class="sgrid" id="sgrid"></div></div>
+  <p class="note" id="note"></p>
+</main>
+<script>
+/* ===== SETTINGS =====
+   SHEET_CSV_URL: link of the "Challenges" tab published as CSV
+   (Google Sheets > File > Share > Publish to web > Challenges > CSV).
+   Leave empty to use the built-in data below. */
+const SHEET_CSV_URL = '';
+const STAKEHOLDER_API = 'https://script.google.com/macros/s/AKfycbwR2zrhnt3KQVlWvMit34ffcIUKJveUW2qty6jXkXc3k3rn9bC8oBPaht_lBR_hMh5qMA/exec';
+const SEED = [
+{
+"id": "GOV-C1",
+"group": "Governance",
+"type": "Challenge",
+"text_en": "Implementing effective and coordinated policies across countries",
+"text_ro": "Implementarea unor politici eficiente și coordonate între țări",
+"tool": "",
+"source": "Application Form BSB00949 v2.0 – transnational cooperation, aligning strategies",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "GOV-C2",
+"group": "Governance",
+"type": "Challenge",
+"text_en": "Reducing pollution and ensuring good environmental status",
+"text_ro": "Reducerea poluării și asigurarea stării ecologice bune",
+"tool": "",
+"source": "Application Form – pressures: eutrophication, contaminants",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "GOV-C3",
+"group": "Governance",
+"type": "Challenge",
+"text_en": "Strengthening monitoring, data sharing and regional cooperation",
+"text_ro": "Consolidarea monitorizării, a schimbului de date și a cooperării regionale",
+"tool": "",
+"source": "Application Form – collaboration and data sharing among Black Sea countries",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "GOV-C4",
+"group": "Governance",
+"type": "Challenge",
+"text_en": "Integrating climate adaptation and ecosystem protection into planning and decision-making",
+"text_ro": "Integrarea adaptării la schimbările climatice și a protecției ecosistemelor în planificare și decizie",
+"tool": "",
+"source": "Application Form – vulnerability to human and climate pressures",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "GOV-S1",
+"group": "Governance",
+"type": "Support",
+"text_en": "Provides scientific evidence and integrated data for policy development",
+"text_ro": "Oferă dovezi științifice și date integrate pentru dezvoltarea politicilor",
+"tool": "WebGIS; Monitoring data",
+"source": "Application Form – informed decision-making bodies",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "GOV-S2",
+"group": "Governance",
+"type": "Support",
+"text_en": "Identifies environmental hotspots and risks",
+"text_ro": "Identifică zonele critice (hotspots) și riscurile de mediu",
+"tool": "Remote sensing; Modelling",
+"source": "Application Form – vulnerability assessment",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "GOV-S3",
+"group": "Governance",
+"type": "Support",
+"text_en": "Supports regional cooperation and the coherence of marine strategies (e.g. MSFD, EU Green Deal, Bucharest Convention, BS SAP)",
+"text_ro": "Sprijină cooperarea regională și coerența strategiilor marine (ex. DCSMM, Pactul Verde European, Convenția de la București, BS SAP)",
+"tool": "",
+"source": "Application Form; Black Sea Commission (LBS AG)",
+"status": "To check",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": "MSFD applies only to RO and BG – Bucharest Convention / BS SAP added for TR, UA, GE. Confirm wording."
+},
+{
+"id": "BUS-C1",
+"group": "Business",
+"type": "Challenge",
+"text_en": "Reducing impacts from shipping (e.g. underwater noise, emissions, accidental spills)",
+"text_ro": "Reducerea impactului transportului maritim (ex. zgomot subacvatic, emisii, deversări accidentale)",
+"tool": "",
+"source": "Application Form – transport sector",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "BUS-C2",
+"group": "Business",
+"type": "Challenge",
+"text_en": "Ensuring sustainable fisheries and aquaculture",
+"text_ro": "Asigurarea unui pescuit și a unei acvaculturi durabile",
+"tool": "",
+"source": "Application Form – overfishing; fisheries and aquaculture sectors",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": "Challenge only – no project tool targets fisheries directly"
+},
+{
+"id": "BUS-C3",
+"group": "Business",
+"type": "Challenge",
+"text_en": "Minimising pollution from industrial and coastal activities (e.g. chemicals, plastics, wastewater)",
+"text_ro": "Minimizarea poluării generate de activitățile industriale și costiere (ex. substanțe chimice, plastic, ape uzate)",
+"tool": "",
+"source": "Application Form – pollution from contaminants",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "BUS-C4",
+"group": "Business",
+"type": "Challenge",
+"text_en": "Balancing economic growth with ecosystem conservation",
+"text_ro": "Echilibrarea creșterii economice cu conservarea ecosistemelor",
+"tool": "",
+"source": "Application Form – sustainable blue economy",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "BUS-C5",
+"group": "Business",
+"type": "Challenge",
+"text_en": "Adopting cleaner technologies and green practices",
+"text_ro": "Adoptarea unor tehnologii mai curate și a practicilor verzi",
+"tool": "",
+"source": "Application Form – adoption of advanced technologies and sustainable practices",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "BUS-S1",
+"group": "Business",
+"type": "Support",
+"text_en": "Provides data and tools for environmental risk assessment (e.g. WebGIS, monitoring, models)",
+"text_ro": "Oferă date și instrumente pentru evaluarea riscurilor de mediu (ex. WebGIS, monitorizare, modele)",
+"tool": "WebGIS; Passive acoustics; Modelling",
+"source": "Application Form – suite of tools",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "BUS-S2",
+"group": "Business",
+"type": "Support",
+"text_en": "Supports best practices and innovative solutions for lower environmental impact",
+"text_ro": "Promovează bune practici și soluții inovatoare pentru un impact redus asupra mediului",
+"tool": "Guidelines & best practices",
+"source": "Application Form – guidelines and best practices",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "BUS-S3",
+"group": "Business",
+"type": "Support",
+"text_en": "Helps identify opportunities for a sustainable and resilient blue economy",
+"text_ro": "Ajută la identificarea oportunităților pentru o economie albastră durabilă și rezilientă",
+"tool": "",
+"source": "Application Form – smart and sustainable blue economy",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "CIV-C1",
+"group": "Civil Society",
+"type": "Challenge",
+"text_en": "Raising awareness about threats to the Black Sea",
+"text_ro": "Creșterea gradului de conștientizare privind amenințările la adresa Mării Negre",
+"tool": "",
+"source": "Dissemination Plan",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "CIV-C2",
+"group": "Civil Society",
+"type": "Challenge",
+"text_en": "Promoting responsible behaviour and reducing marine litter (e.g. plastics, waste)",
+"text_ro": "Promovarea comportamentului responsabil și reducerea deșeurilor marine (ex. plastic, deșeuri)",
+"tool": "",
+"source": "Infographic only",
+"status": "To check",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": "Marine litter is not among the listed project methods – confirm a project activity covers it"
+},
+{
+"id": "CIV-C3",
+"group": "Civil Society",
+"type": "Challenge",
+"text_en": "Supporting conservation of biodiversity and habitats",
+"text_ro": "Sprijinirea conservării biodiversității și habitatelor",
+"tool": "",
+"source": "Application Form – habitat destruction, biodiversity",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "CIV-C4",
+"group": "Civil Society",
+"type": "Challenge",
+"text_en": "Ensuring access to information and citizen participation",
+"text_ro": "Asigurarea accesului la informație și a participării cetățenilor",
+"tool": "",
+"source": "Application Form – collaboration with citizens",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "CIV-C5",
+"group": "Civil Society",
+"type": "Challenge",
+"text_en": "Building local stewardship and involvement in solutions",
+"text_ro": "Dezvoltarea responsabilității locale și a implicării în soluții",
+"tool": "",
+"source": "Application Form – NGO community engagement",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "CIV-S1",
+"group": "Civil Society",
+"type": "Support",
+"text_en": "Provides accessible information and visual tools (e.g. WebGIS, educational materials)",
+"text_ro": "Oferă informații accesibile și instrumente vizuale (ex. WebGIS, materiale educaționale)",
+"tool": "WebGIS; Black Sea Quiz",
+"source": "Application Form – user-friendly WebGIS; Dissemination Plan",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "CIV-S2",
+"group": "Civil Society",
+"type": "Support",
+"text_en": "Engages communities in monitoring and citizen science (e.g. marine litter, invasive species)",
+"text_ro": "Implică comunitățile în monitorizare și știința cetățenească (ex. deșeuri marine, specii invazive)",
+"tool": "eDNA; Underwater cameras",
+"source": "Infographic only",
+"status": "To check",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": "Citizen science / marine litter not in Application Form methods – confirm, or reword to 'invasive species (eDNA, underwater cameras)'"
+},
+{
+"id": "CIV-S3",
+"group": "Civil Society",
+"type": "Support",
+"text_en": "Increases awareness about marine challenges and solutions",
+"text_ro": "Crește gradul de conștientizare privind provocările și soluțiile marine",
+"tool": "Black Sea Caravan; Social media",
+"source": "Dissemination Plan",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "CIV-S4",
+"group": "Civil Society",
+"type": "Support",
+"text_en": "Strengthens the connection between people and a healthy Black Sea",
+"text_ro": "Întărește legătura dintre oameni și o Mare Neagră sănătoasă",
+"tool": "",
+"source": "Dissemination Plan",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "RES-C1",
+"group": "Research",
+"type": "Challenge",
+"text_en": "Disparities in research and innovation capacities between riparian countries",
+"text_ro": "Diferențele de capacitate de cercetare și inovare între țările riverane",
+"tool": "",
+"source": "Application Form – project summary",
+"status": "Proposed",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": "New group – not on the infographic"
+},
+{
+"id": "RES-C2",
+"group": "Research",
+"type": "Challenge",
+"text_en": "Harmonising methods and sharing data across borders",
+"text_ro": "Armonizarea metodelor și schimbul transfrontalier de date",
+"tool": "",
+"source": "Application Form – collaborative studies",
+"status": "Proposed",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": "New group – not on the infographic"
+},
+{
+"id": "RES-S1",
+"group": "Research",
+"type": "Support",
+"text_en": "Joint collaborative studies by research organisations from Bulgaria, Romania, Türkiye and Ukraine",
+"text_ro": "Studii comune realizate de organizații de cercetare din Bulgaria, România, Turcia și Ucraina",
+"tool": "Virtual joint cruise",
+"source": "Application Form – collaborative studies",
+"status": "Proposed",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "RES-S2",
+"group": "Research",
+"type": "Support",
+"text_en": "Training on new tools: eDNA, passive samplers, passive acoustics, remote sensing, machine learning",
+"text_ro": "Instruire privind noile instrumente: eDNA, eșantionatoare pasive, acustică pasivă, teledetecție, învățare automată",
+"tool": "eDNA; Passive samplers; Passive acoustics; Remote sensing; Machine learning",
+"source": "Application Form – training sessions",
+"status": "Proposed",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "SOL-1",
+"group": "Shared",
+"type": "Solution",
+"text_en": "Cleaner waters and reduced pollution",
+"text_ro": "Ape mai curate și poluare redusă",
+"tool": "",
+"source": "Infographic",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "SOL-2",
+"group": "Shared",
+"type": "Solution",
+"text_en": "Healthy marine biodiversity and habitats",
+"text_ro": "Biodiversitate și habitate marine sănătoase",
+"tool": "",
+"source": "Infographic",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "SOL-3",
+"group": "Shared",
+"type": "Solution",
+"text_en": "Sustainable blue economy",
+"text_ro": "Economie albastră durabilă",
+"tool": "",
+"source": "Infographic",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "SOL-4",
+"group": "Shared",
+"type": "Solution",
+"text_en": "Increased resilience to climate change",
+"text_ro": "Reziliență crescută la schimbările climatice",
+"tool": "",
+"source": "Infographic",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "SOL-5",
+"group": "Shared",
+"type": "Solution",
+"text_en": "Stronger cooperation and informed decisions",
+"text_ro": "Cooperare consolidată și decizii informate",
+"tool": "",
+"source": "Infographic",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+},
+{
+"id": "SOL-6",
+"group": "Shared",
+"type": "Solution",
+"text_en": "Engaged communities and long-term stewardship",
+"text_ro": "Comunități implicate și responsabilitate pe termen lung",
+"tool": "",
+"source": "Infographic",
+"status": "Verified",
+"checked_by": "Claude (vs. Application Form)",
+"date": "2026-10-22",
+"notes": ""
+}
+];
+
+const GROUPS = [
+ {key:'Governance',color:'var(--gov)',en:['Governance','Policies, regulations and cooperation'],ro:['Guvernanță','Politici, reglementări și cooperare'],aud:['Local public authority','National public authority','Regional public authority']},
+ {key:'Business',color:'var(--bus)',en:['Business','Sustainable and responsible activities'],ro:['Mediul de afaceri','Activități durabile și responsabile'],aud:['SME','Business support organisation']},
+ {key:'Civil Society',color:'var(--civ)',en:['Civil Society','Awareness, participation and stewardship'],ro:['Societatea civilă','Conștientizare, participare și responsabilitate'],aud:['Interest groups including NGOs','Education / training center and school','General public']},
+ {key:'Research',color:'var(--res)',en:['Research & Academia','Knowledge, methods and capacity'],ro:['Cercetare și mediul academic','Cunoaștere, metode și capacitate'],aud:['Higher education and research organisations']}
+];
+const T = {
+ en:{ch:'Key challenges',sup:'How ANEMONE PLUS supports',shared:'Shared solutions for key challenges',all:'All',Verified:'Verified',"To check":'To check',Proposed:'Proposed',search:'Search statements, tools, sources…',stk:'stakeholders in database',total:'Statements',src:'Source',chk:'Checked by',notes:'Notes',
+   note:'Click any statement to see its source and verification notes. Status is managed in the "Challenges" sheet (Verified / To check / Proposed).'},
+ ro:{ch:'Provocări principale',sup:'Cum sprijină ANEMONE PLUS',shared:'Soluții comune pentru provocările principale',all:'Toate',Verified:'Verificat',"To check":'De verificat',Proposed:'Propus',search:'Caută afirmații, instrumente, surse…',stk:'actori în baza de date',total:'Afirmații',src:'Sursă',chk:'Verificat de',notes:'Note',
+   note:'Faceți clic pe o afirmație pentru a vedea sursa și notele de verificare. Statusul se gestionează în foaia „Challenges” (Verified / To check / Proposed).'}
+};
+let rows = SEED, lang = 'en', filt = 'all', q = '', counts = {};
+try{ lang = localStorage.getItem('chLang') || 'en'; }catch(e){}
+
+function parseCSV(s){
+  const out=[];let row=[],f='',i=0,qt=false;
+  while(i<s.length){const c=s[i];
+    if(qt){ if(c=='"'){ if(s[i+1]=='"'){f+='"';i++;} else qt=false; } else f+=c; }
+    else if(c=='"') qt=true;
+    else if(c==','){row.push(f);f='';}
+    else if(c=='\n'||c=='\r'){ if(c=='\r'&&s[i+1]=='\n')i++; row.push(f);out.push(row);row=[];f=''; }
+    else f+=c; i++; }
+  if(f||row.length){row.push(f);out.push(row);}
+  const h=out.shift().map(x=>x.trim());
+  return out.filter(r=>r.some(x=>x.trim())).map(r=>Object.fromEntries(h.map((k,j)=>[k,(r[j]||'').trim()])));
+}
+const esc = s => String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const txt = r => (lang=='ro' && r.text_ro) ? r.text_ro : r.text_en;
+const stCls = s => 'b-' + (s||'To check').split(' ')[0];
+const match = r => (filt=='all' || r.status==filt) &&
+  (!q || [r.text_en,r.text_ro,r.tool,r.source,r.notes,r.id].join(' ').toLowerCase().includes(q));
+
+function itemHTML(r,color){
+  const L=T[lang];
+  const tools=(r.tool||'').split(';').map(x=>x.trim()).filter(Boolean).map(x=>`<span class="tag">${esc(x)}</span>`).join('');
+  return `<div class="item" style="border-left-color:${color}" onclick="this.classList.toggle('open')">
+    ${esc(txt(r))}
+    <div class="meta"><span class="badge ${stCls(r.status)}">${esc(L[r.status]||r.status)}</span>${tools}<span class="id">${esc(r.id)}</span></div>
+    <div class="det"><b>${L.src}:</b> ${esc(r.source)||'—'}<br><b>${L.chk}:</b> ${esc(r.checked_by)||'—'} ${esc(r.date)}${r.notes?`<br><b>${L.notes}:</b> ${esc(r.notes)}`:''}</div>
+  </div>`;
+}
+function render(){
+  const L=T[lang];
+  document.getElementById('lEN').classList.toggle('on',lang=='en');
+  document.getElementById('lRO').classList.toggle('on',lang=='ro');
+  document.documentElement.lang=lang;
+  // summary
+  const n=s=>rows.filter(r=>r.status==s).length, tot=rows.length;
+  document.getElementById('summary').innerHTML=
+    `<div class="stat"><b>${tot}</b><span>${L.total}</span></div>`+
+    ['Verified','To check','Proposed'].map(s=>`<div class="stat"><b>${n(s)}</b><span>${L[s]}</span><div class="prog"><div style="width:${tot?n(s)/tot*100:0}%;background:${s=='Verified'?'var(--ok)':s=='To check'?'var(--chk)':'var(--prop)'}"></div></div></div>`).join('');
+  // filter bar
+  const bar=document.getElementById('bar');
+  bar.innerHTML=['all','Verified','To check','Proposed'].map(s=>`<button class="chip ${filt==s?'on':''}" data-f="${s}">${s=='all'?L.all:L[s]} (${s=='all'?tot:n(s)})</button>`).join('')+
+    `<input id="q" placeholder="${L.search}" value="${esc(q)}">`;
+  bar.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filt=b.dataset.f;render();});
+  const qi=bar.querySelector('#q'); qi.oninput=e=>{q=e.target.value.toLowerCase();renderCols();};
+  renderCols();
+  document.getElementById('note').textContent=L.note;
+}
+function renderCols(){
+  const L=T[lang];
+  document.getElementById('grid').innerHTML=GROUPS.map(g=>{
+    const ch=rows.filter(r=>r.group==g.key&&r.type=='Challenge'&&match(r));
+    const sp=rows.filter(r=>r.group==g.key&&r.type=='Support'&&match(r));
+    const c=g.aud.reduce((a,k)=>a+(counts[k]||0),0);
+    return `<section class="col"><div class="hd" style="background:${g.color}">
+      <h2>${g[lang][0]}</h2><p>${g[lang][1]}</p>
+      <span class="cnt" title="${esc(g.aud.join(', '))}">${counts.__ok?c:'…'} ${L.stk}</span></div>
+      <div class="sec"><h3 style="color:${g.color}">${L.ch}</h3>${ch.map(r=>itemHTML(r,g.color)).join('')||'<div class="empty">—</div>'}</div>
+      <div class="sec"><h3 style="color:${g.color}">${L.sup}</h3>${sp.map(r=>itemHTML(r,g.color)).join('')||'<div class="empty">—</div>'}</div>
+    </section>`;}).join('');
+  document.getElementById('sharedT').textContent=L.shared;
+  document.getElementById('sgrid').innerHTML=rows.filter(r=>r.type=='Solution'&&match(r)).map(r=>itemHTML(r,'var(--navy2)')).join('');
+}
+document.getElementById('lEN').onclick=()=>{lang='en';try{localStorage.setItem('chLang',lang)}catch(e){};render();};
+document.getElementById('lRO').onclick=()=>{lang='ro';try{localStorage.setItem('chLang',lang)}catch(e){};render();};
+render();
+
+// live data: challenges sheet (optional) + stakeholder counts
+if(SHEET_CSV_URL){
+  fetch(SHEET_CSV_URL).then(r=>r.text()).then(t=>{const p=parseCSV(t); if(p.length){rows=p;render();}}).catch(e=>console.warn('Challenges sheet not loaded, using built-in data',e));
+}
+fetch(STAKEHOLDER_API).then(r=>r.json()).then(j=>{
+  (j.data||[]).forEach(s=>{counts[s.audience]=(counts[s.audience]||0)+1}); counts.__ok=true; renderCols();
+}).catch(e=>console.warn('Stakeholder counts not loaded',e));
+</script>
+</body>
+</html>
