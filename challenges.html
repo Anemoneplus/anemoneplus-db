@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stakeholder Challenges · ANEMONE PLUS</title>
 <style>
-:root{--navy1:#0f1e33;--navy2:#1e3a5f;--bg:#f1f5f9;--ink:#1a2b3c;--muted:#5b6b7c;--line:#e2e8f0;
---gov:#1d4f91;--bus:#e0620d;--civ:#1f6b45;--res:#6b3fa0;--ok:#15803d;--chk:#c2410c;--prop:#6b3fa0}
+:root{--navy1:#00205e;--navy2:#003399;--logo-blue:#003399;--logo-sky:#00a0e3;--logo-teal:#18baa8;--bg:#f1f5f9;--ink:#1a2b3c;--muted:#5b6b7c;--line:#e2e8f0;
+--gov:#003399;--bus:#0071b3;--civ:#0f7d72;--res:#00205e;--ok:#15803d;--chk:#c2410c;--prop:#6b3fa0}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 header{background:linear-gradient(90deg,var(--navy1),var(--navy2));color:#fff;padding:10px 22px;display:flex;align-items:center;gap:12px;min-height:70px}
@@ -932,10 +932,10 @@ const chOf = i => Array.isArray(i.challenges)?i.challenges:String(i.challenges||
 let ADMIN = null; // password kept in memory only while the page is open
 
 const GROUPS = [
- {key:'Governance',img:'10',color:'var(--gov)',en:['Governance','Policies, regulations and cooperation'],ro:['Guvernanță','Politici, reglementări și cooperare'],bg:['Управление','Политики, регулации и сътрудничество'],tr:['Yönetişim','Politikalar, düzenlemeler ve işbirliği'],uk:['Врядування','Політика, регулювання та співпраця'],aud:['Local public authority','National public authority','Regional public authority']},
- {key:'Business',img:'14',color:'var(--bus)',en:['Business','Sustainable and responsible activities'],ro:['Mediul de afaceri','Activități durabile și responsabile'],bg:['Бизнес','Устойчиви и отговорни дейности'],tr:['İş dünyası','Sürdürülebilir ve sorumlu faaliyetler'],uk:['Бізнес','Стала та відповідальна діяльність'],aud:['SME','Business support organisation']},
- {key:'Civil Society',img:'03',color:'var(--civ)',en:['Civil Society','Awareness, participation and stewardship'],ro:['Societatea civilă','Conștientizare, participare și responsabilitate'],bg:['Гражданско общество','Осведоменост, участие и отговорност'],tr:['Sivil toplum','Farkındalık, katılım ve sahiplenme'],uk:['Громадянське суспільство','Обізнаність, участь та відповідальність'],aud:['Interest groups including NGOs','Education / training center and school','General public']},
- {key:'Research',img:'',color:'var(--res)',en:['Research & Academia','Knowledge, methods and capacity'],ro:['Cercetare și mediul academic','Cunoaștere, metode și capacitate'],bg:['Наука и академични среди','Знания, методи и капацитет'],tr:['Araştırma ve akademi','Bilgi, yöntemler ve kapasite'],uk:['Наука та академічна спільнота','Знання, методи та спроможність'],aud:['Higher education and research organisations']}
+ {key:'Governance',acc:'var(--logo-sky)',img:'10',color:'var(--gov)',en:['Governance','Policies, regulations and cooperation'],ro:['Guvernanță','Politici, reglementări și cooperare'],bg:['Управление','Политики, регулации и сътрудничество'],tr:['Yönetişim','Politikalar, düzenlemeler ve işbirliği'],uk:['Врядування','Політика, регулювання та співпраця'],aud:['Local public authority','National public authority','Regional public authority']},
+ {key:'Business',acc:'var(--logo-sky)',img:'14',color:'var(--bus)',en:['Business','Sustainable and responsible activities'],ro:['Mediul de afaceri','Activități durabile și responsabile'],bg:['Бизнес','Устойчиви и отговорни дейности'],tr:['İş dünyası','Sürdürülebilir ve sorumlu faaliyetler'],uk:['Бізнес','Стала та відповідальна діяльність'],aud:['SME','Business support organisation']},
+ {key:'Civil Society',acc:'var(--logo-teal)',img:'03',color:'var(--civ)',en:['Civil Society','Awareness, participation and stewardship'],ro:['Societatea civilă','Conștientizare, participare și responsabilitate'],bg:['Гражданско общество','Осведоменост, участие и отговорност'],tr:['Sivil toplum','Farkındalık, katılım ve sahiplenme'],uk:['Громадянське суспільство','Обізнаність, участь та відповідальність'],aud:['Interest groups including NGOs','Education / training center and school','General public']},
+ {key:'Research',acc:'var(--logo-teal)',img:'',color:'var(--res)',en:['Research & Academia','Knowledge, methods and capacity'],ro:['Cercetare și mediul academic','Cunoaștere, metode și capacitate'],bg:['Наука и академични среди','Знания, методи и капацитет'],tr:['Araştırma ve akademi','Bilgi, yöntemler ve kapasite'],uk:['Наука та академічна спільнота','Знання, методи та спроможність'],aud:['Higher education and research organisations']}
 ];
 const T = {
  en:{rig:'Related infographics',lib:'Infographics library',cats:{all:'All',P:'Pressures',T:'Monitoring tools',S:'Stakeholders'},linked:'Linked stakeholders',showall:'Show all',showless:'Show fewer',matched:'matched by audience and area of interest / expertise',loading:'Loading stakeholders…',ch:'Key challenges',sup:'How ANEMONE PLUS supports',shared:'Shared solutions for key challenges',all:'All',Verified:'Verified',"To check":'To check',Proposed:'Proposed',search:'Search challenges, tools…',stk:'stakeholders in database',total:'Statements',src:'Source',chk:'Checked by',notes:'Notes',
@@ -1109,7 +1109,7 @@ function renderCols(){
     const ch=rows.filter(r=>r.group==g.key&&r.type=='Challenge'&&match(r));
     const sp=rows.filter(r=>r.group==g.key&&r.type=='Support'&&match(r));
     const c=g.aud.reduce((a,k)=>a+(counts[k]||0),0);
-    return `<section class="col"><div class="hd" style="background:${g.color}">
+    return `<section class="col"><div class="hd" style="background:${g.color};border-bottom:4px solid ${g.acc}">
       <h2>${g[lang][0]}</h2><p>${g[lang][1]}</p>
       <span class="cnt" title="${esc(g.aud.join(', '))}">${counts.__ok?c:'…'} ${L.stk}</span></div>
       <div class="sec"><h3 style="color:${g.color}">${L.ch}</h3>${ch.map(r=>itemHTML(r,g.color)).join('')||'<div class="empty">—</div>'}</div>
